@@ -7,9 +7,12 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-const response = await openai.responses.create({
-    model: "gpt-4o-mini",
-    input: "Write a one-sentence bedtime story about a unicorn."
-});
+export const responseAI = async (req, res) => {
+    const { prompt } = req.body;
+    const response = await openai.responses.create({
+        model: "gpt-4o-mini",
+        input: prompt
+    });
 
-console.log(response.output[0].content[0].text);
+    res.json({ text: response.output[0].content[0].text });
+};
