@@ -4,7 +4,7 @@ import cors from 'cors';
 import { WebSocketServer } from 'ws';
 import { verificarConexion } from './src/database.js';
 import { initializeDatabase, verificarTablas } from './src/initDatabase.js';
-import { initMQTT, guardarDatosBuffer } from './src/mqtt/robotClient.js';
+// import { initMQTT, guardarDatosBuffer } from './src/mqtt/robotClient.js';
 
 // Rutas
 import authRoutes from './src/auth/user.js';
@@ -166,13 +166,13 @@ const server = app.listen(PORT, async () => {
     }
 
     // Inicializar MQTT
-    console.log('🔌 Iniciando MQTT...');
-    initMQTT(wss);
+    // console.log('🔌 Iniciando MQTT...');
+    // initMQTT(wss);
 
     // Guardar datos cada 30 segundos
-    setInterval(guardarDatosBuffer, 30000);
+    // setInterval(guardarDatosBuffer, 30000);
 
-    console.log('${'='.repeat(60)}');
+    console.log(`${'='.repeat(60)}`);
     console.log('✅ ✅ ✅  SISTEMA COMPLETAMENTE LISTO PARA USAR  ✅ ✅ ✅');
     console.log(`${'='.repeat(60)}\n`);
 });
