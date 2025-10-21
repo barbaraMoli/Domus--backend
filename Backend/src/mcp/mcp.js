@@ -3,21 +3,28 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import { toolsManifest } from "./tools/manifest.js";
 
-// Crear el servidor MCP
 const server = new McpServer({
     name: "demo-server",
     version: "1.0.0",
 });
 
 toolsManifest.forEach(tool => {
-    server.registerTool(tool.name, tool, tool.run);
+    server.registerTool(
+        tool.name,
+        {
+            title: tool.title,
+            description: tool.description,
+            inputSchema: tool.inputSchema,
+            outputSchema: tool.outputSchema
+        },
+        tool.run
+    );
 });
 
 export function startMCP() {
     const app = express();
     app.use(express.json());
 
-    // Endpoint para manejar las solicitudes MCP
     app.post("/mcp", async (req, res) => {
         const transport = new StreamableHTTPServerTransport({
             enableJsonResponse: true,
@@ -34,3 +41,4 @@ export function startMCP() {
         console.log(`✅ MCP Server corriendo en http://localhost:${port}/mcp`);
     });
 }
+
