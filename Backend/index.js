@@ -1,5 +1,5 @@
-import express from 'express';
 import dotenv from 'dotenv';
+
 import cors from 'cors';
 import { WebSocketServer } from 'ws';
 import { verificarConexion } from './src/database.js';
@@ -18,6 +18,10 @@ import sosRoutes from './src/sos/sosRoutes.js';
 import { loggerMiddleware } from './src/utils/logger.js';
 
 dotenv.config();
+
+import express from 'express';
+import cors from 'cors';
+import requestToAI from './src/aiModel/aiModelRoute.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -139,6 +143,10 @@ const server = app.listen(PORT, async () => {
     console.log(`📚 Documentación: http://localhost:${PORT}/api/docs`);
     console.log(`🔌 WebSocket: ws://localhost:8080`);
     console.log(`${'='.repeat(60)}\n`);
+
+app.use(express.json());
+app.use(cors());
+app.use('/requestToAI', requestToAI);
 
     // Verificar conexión a BD
     console.log('🔍 Verificando conexión a Supabase...');
