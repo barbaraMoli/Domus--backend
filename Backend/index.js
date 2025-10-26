@@ -107,6 +107,16 @@ app.use('/api/ia', iaRoutes);
 // Extra: endpoint AI
 app.use('/requestToAI', requestToAI);
 
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.json({ 
+        message: '🤖 Domus Backend API',
+        version: '1.0.0',
+        docs: '/api/docs',
+        health: '/health'
+    });
+});
+
 // 404
 app.use((req, res) => {
     res.status(404).json({
