@@ -57,7 +57,6 @@ router.post('/interacciones_ia', verificarToken, async (req, res) => {
             model,
             tokens_used: tokens_used || 0,
             metadata: metadata || {},
-            creado_en: new Date().toISOString()
         });
 
         if (!result.success) {
