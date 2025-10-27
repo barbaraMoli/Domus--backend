@@ -18,7 +18,7 @@ import iaRoutes from './src/ia/iaRoutes.js';
 import sosRoutes from './src/sos/sosRoutes.js';
 import requestToAI from './src/aiModel/aiModelRoute.js';
 
-import { loggerMiddleware } from './src/utils/logger.js';
+// import { loggerMiddleware } from './src/utils/logger.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
