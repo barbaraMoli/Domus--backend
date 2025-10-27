@@ -17,6 +17,8 @@ import iaRoutes from './src/ia/iaRoutes.js';
 // import sosRoutes from './src/sos/sosRoutes.js';
 
 import requestToAI from './src/aiModel/aiModelRoute.js';
+import { startMCP } from './src/mcp/mcp.js';
+import { start } from 'repl';
 // import { loggerMiddleware } from './src/utils/logger.js';
 
 const app = express();
@@ -169,6 +171,7 @@ const server = app.listen(PORT, async () => {
     }
 
     console.log('✅ ✅ ✅  SISTEMA COMPLETAMENTE LISTO PARA USAR  ✅ ✅ ✅\n');
+    startMCP();
 });
 
 // ==================
