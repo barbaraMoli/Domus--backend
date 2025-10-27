@@ -19,9 +19,9 @@ import sosRoutes from './src/sos/sosRoutes.js';
 import requestToAI from './src/aiModel/aiModelRoute.js';
 // import { loggerMiddleware } from './src/utils/logger.js';
 
-import { loggerMiddleware } from './src/utils/logger.js';
+// import { loggerMiddleware } from './src/utils/logger.js';
 import { startMCP } from './src/mcp/mcp.js';
-import { start } from 'repl';
+// import { start } from 'repl';
 
 
 const app = express();
