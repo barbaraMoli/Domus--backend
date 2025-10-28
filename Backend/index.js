@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import { WebSocketServer } from 'ws';
+import jwt from 'jsonwebtoken';
 
 import { verificarConexion } from './src/database.js';
 import { initializeDatabase, verificarTablas } from './src/initDatabase.js';
@@ -18,21 +19,32 @@ import sosRoutes from './src/sos/sosRoutes.js';
 
 import requestToAI from './src/aiModel/aiModelRoute.js';
 import jwt from 'jsonwebtoken';
+import requestToAI from './src/aiModel/aiModelRoute.js';
+
+
+import { loggerMiddleware } from './src/utils/logger.js';
+import { startMCP } from './src/mcp/mcp.js';
+import { start } from 'repl';
 // import { loggerMiddleware } from './src/utils/logger.js';
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ==================
-// MIDDLEWARES (antes del listen)
+// MIDDLEWARES
 // ==================
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Permitir lista de orígenes desde env (coma-separado) o localhost por defecto
-const allowedOrigins = process.env.CORS_ORIGIN
+/* const allowedOrigins = process.env.CORS_ORIGIN
     ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
-    : ['http://localhost:5173', 'http://localhost:3000'];
+    : ['http://localhost:5173', 'http://localhost:3000']; */
+    
+// CORS
+const allowedOrigins =
+    process.env.CORS_ORIGIN?.split(',').map(s => s.trim()) || '*';
 
 app.use(
     cors({
@@ -58,7 +70,9 @@ app.use(
 
 // app.use(loggerMiddleware);
 
-// Rutas públicas
+// ==================
+// RUTAS
+// ==================
 app.get('/health', (_req, res) => {
     res.json({
         status: 'OK',
@@ -114,7 +128,7 @@ app.get('/api/docs', (_req, res) => {
     });
 });
 
-// Rutas privadas/protegidas
+// Rutas protegidas
 app.use('/api/auth', authRoutes);
 app.use('/api/sensors', sensorRoutes);
 app.use('/api/robot', robotRoutes);
@@ -125,6 +139,16 @@ app.use('/api/sos', sosRoutes);
 // Extra: endpoint AI
 app.use('/requestToAI', requestToAI);
 
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.json({
+        message: '🤖 Domus Backend API',
+        version: '1.0.0',
+        docs: '/api/docs',
+        health: '/health',
+    });
+});
+
 // 404
 app.use((req, res) => {
     res.status(404).json({
@@ -134,7 +158,7 @@ app.use((req, res) => {
     });
 });
 
-// Errores
+// Errores generales
 app.use((err, _req, res, _next) => {
     console.error('❌ Error:', err.message);
     res.status(err.status || 500).json({
@@ -177,10 +201,11 @@ const server = app.listen(PORT, async () => {
     }
 
     console.log('✅ ✅ ✅  SISTEMA COMPLETAMENTE LISTO PARA USAR  ✅ ✅ ✅\n');
+    startMCP();
 });
 
 // ==================
-// WEBSOCKETS sobre el MISMO server/puerto
+// WEBSOCKETS
 // ==================
 /* const wss = new WebSocketServer({ server });
 wss.on('connection', (ws) => {
