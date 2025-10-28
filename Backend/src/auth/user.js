@@ -165,7 +165,8 @@ router.post('/login', async (req, res) => {
                 id: usuario.id,
                 username: usuario.username,
                 email: usuario.email,
-                rol: usuario.rol
+                rol: usuario.rol,
+                telefono_sos: usuario.telefono_sos || null
             }
         });
     } catch (err) {
@@ -216,7 +217,8 @@ router.post('/refresh', async (req, res) => {
                     id: usuario.id,
                     username: usuario.username,
                     email: usuario.email,
-                    rol: usuario.rol
+                    rol: usuario.rol,
+                    telefono_sos: usuario.telefono_sos || null
                 }
             });
         } catch (jwtError) {
