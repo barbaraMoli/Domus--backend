@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: domus-backend
+    env: node
+    plan: free  # Cambia a "starter" o "standard" si necesitas más recursos
+    region: oregon  # Puedes cambiar a: frankfurt, singapore, sydney, mumbai, etc.
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      # ⚠️ OBLIGATORIAS - Configura estas en el dashboard de Render o aquí con valores reales
+      - key: SUPABASE_URL
+        sync: false  # Debes configurarla manualmente en Render Dashboard
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false  # Debes configurarla manualmente en Render Dashboard
+      - key: JWT_SECRET
+        sync: false  # Debes configurarla manualmente en Render Dashboard
+        # Genera una clave segura: openssl rand -base64 32
+      
+      # 📱 OPCIONALES - Descomenta y configura según tus necesidades
+      # - key: PORT
+      #   value: 10000
+      
+      # - key: CORS_ORIGIN
+      #   value: "*"  # O tu URL específica: https://tu-frontend.vercel.app
+      
+      # - key: MQTT_BROKER
+      #   value: mqtt://tu_servidor_mqtt:1883
+      
+      # - key: ROBOT_ID
+      #   value: 1
+      
+      # - key: DEFAULT_USER_ID
+      #   value: 1
+      
+      # - key: OPENAI_API_KEY
+      #   sync: false  # Configura manualmente por seguridad
+      
+      # - key: OPEN_API_KEY
+      #   sync: false  # Configura manualmente por seguridad
+

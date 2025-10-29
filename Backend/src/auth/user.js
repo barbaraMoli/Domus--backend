@@ -166,7 +166,7 @@ router.post('/login', async (req, res) => {
                 username: usuario.username,
                 email: usuario.email,
                 rol: usuario.rol,
-                telefono_sos: usuario.telefono_sos || null
+                telefono_sos: usuario.telefono_sos ?? null
             }
         });
     } catch (err) {
